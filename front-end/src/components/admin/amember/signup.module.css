@@ -1,0 +1,94 @@
+/* 회원가입 모달(400px): 라벨 + 입력 한 줄(horizontal) */
+.signUpForm {
+  width: 100%;
+}
+
+.signUpForm :global(.ant-form-item) {
+  margin-bottom: 10px;
+}
+
+.signUpForm :global(.ant-form-item:last-child) {
+  margin-bottom: 0;
+}
+
+.signUpForm :global(.ant-form-item-label > label) {
+  white-space: normal;
+  line-height: 1.4;
+  height: auto;
+}
+
+.signUpForm :global(.ant-form-item-control) {
+  min-width: 0;
+}
+
+.signUpForm :global(.ant-form-item-extra) {
+  text-align: left;
+}
+
+.signUpForm :global(.ant-upload-wrapper.ant-upload-picture-card-wrapper) {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.signUpForm :global(.ant-form-item-has-error .ant-form-item-explain-error) {
+  text-align: left;
+}
+
+/* 컨트롤 영역 안에서 입력·셀렉트 전폭 */
+.inputHalf {
+  width: 100% !important;
+  max-width: 100%;
+}
+
+.profileUploadRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.profileUploadHint {
+  flex: 1;
+  min-width: 0;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* 닉네임: 라벨(폼 기본 열) + 컨트롤(Input·버튼) 한 줄 유지 */
+.signUpForm .nicknameFormItem :global(.ant-form-item-row) {
+  flex-wrap: nowrap;
+  align-items: center;
+}
+
+.signUpForm .nicknameFormItem :global(.ant-form-item-label) {
+  padding-bottom: 0;
+}
+
+.signUpForm .nicknameFormItem :global(.ant-form-item-control-input-content) {
+  width: 100%;
+}
+
+/* 입력 + 중복확인: 한 줄, 줄바꿈 없음 */
+.nicknameRow {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  width: 100%;
+  gap: 8px;
+}
+
+.nicknameRow > :global(.ant-form-item) {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin-bottom: 0;
+}
+
+.nicknameInput {
+  width: 100% !important;
+  max-width: 100%;
+}
+
+.nicknameCheckBtn {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}

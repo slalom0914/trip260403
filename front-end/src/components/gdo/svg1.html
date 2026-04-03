@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>대한민국 여행 플래너 메인</title>
+  <style>
+    /* 전체 페이지 기본 설정 */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Pretendard", "Noto Sans KR", sans-serif;
+      background: linear-gradient(180deg, #f7f9fc 0%, #eef3f8 100%);
+      color: #1f2937;
+    }
+
+    /* 헤더 영역 */
+    header {
+      width: 100%;
+      height: 80px;
+      background-color: #ffffff;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: 800;
+      color: #111827;
+    }
+
+    .nav {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .nav a {
+      text-decoration: none;
+      color: #374151;
+      font-weight: 500;
+    }
+
+    .nav button {
+      border: none;
+      border-radius: 10px;
+      padding: 10px 16px;
+      background-color: #111827;
+      color: #ffffff;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    /* 메인 레이아웃 */
+    main {
+      width: 100%;
+      min-height: calc(100vh - 80px);
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 24px;
+      padding: 32px;
+    }
+
+    .left-panel,
+    .right-panel {
+      background-color: rgba(255, 255, 255, 0.92);
+      border-radius: 24px;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+      padding: 24px;
+    }
+
+    .left-panel h1 {
+      font-size: 32px;
+      margin-bottom: 12px;
+    }
+
+    .left-panel p {
+      color: #4b5563;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .badge-wrap {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    .badge {
+      background-color: #f3f4f6;
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 14px;
+      color: #374151;
+    }
+
+    /* 지도 컨테이너 */
+    .map-box {
+      width: 100%;
+      border-radius: 20px;
+      background: linear-gradient(180deg, #f9fbfd 0%, #eef5fb 100%);
+      border: 1px solid #dbeafe;
+      padding: 24px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 640px;
+    }
+
+    svg {
+      width: 100%;
+      max-width: 560px;
+      height: auto;
+    }
+
+    /* 지역 공통 스타일 */
+    .region {
+      stroke: #ffffff;
+      stroke-width: 3;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .region:hover {
+      filter: brightness(0.97);
+      transform: translateY(-2px);
+    }
+
+    .region-label {
+      font-size: 15px;
+      font-weight: 700;
+      fill: #111827;
+      pointer-events: none;
+    }
+
+    .region-number {
+      font-size: 22px;
+      font-weight: 900;
+      fill: #111827;
+      pointer-events: none;
+    }
+
+    /* 오른쪽 패널 */
+    .right-panel h2 {
+      font-size: 24px;
+      margin-bottom: 16px;
+    }
+
+    .region-card {
+      background-color: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 18px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+
+    .region-card h3 {
+      margin-bottom: 10px;
+      font-size: 20px;
+    }
+
+    .region-card p {
+      color: #4b5563;
+      line-height: 1.6;
+    }
+
+    .region-meta {
+      margin-top: 12px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .meta-chip {
+      background-color: #eef2ff;
+      color: #4338ca;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    @media (max-width: 1024px) {
+      main {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- 헤더 -->
+  <header>
+    <div class="logo">PLAN A</div>
+    <nav class="nav">
+      <a href="#">여행지 찾기</a>
+      <a href="#">일정 만들기</a>
+      <a href="#">추천 코스</a>
+      <button type="button">로그인</button>
+    </nav>
+  </header>
+
+  <!-- 메인 -->
+  <main>
+    <section class="left-panel">
+      <h1>대한민국 어디로 떠날까요?</h1>
+      <p>
+        지역을 선택하면 해당 시·도의 여행 테마, 추천 일정, 인기 검색 데이터를
+        기반으로 맞춤형 여행 플랜을 확인할 수 있습니다.
+      </p>
+
+      <div class="badge-wrap">
+        <div class="badge">#계획형 여행</div>
+        <div class="badge">#국내 여행 플래너</div>
+        <div class="badge">#지역별 추천 코스</div>
+      </div>
+
+      <div class="map-box">
+        <!--
+          주의:
+          아래 SVG는 "메인 화면용 샘플 지도"입니다.
+          실제 행정구역 경계와 완전히 동일한 정밀 지도는 아니며,
+          인터랙션 구조를 보여주기 위한 실행 가능한 예제입니다.
+        -->
+        <svg viewBox="0 0 520 760" xmlns="http://www.w3.org/2000/svg">
+          <!-- 서울 -->
+          <g class="map-region" data-name="서울특별시" data-desc="수도권 중심, 궁궐·전시·미식 여행에 적합">
+            <rect class="region" x="165" y="85" width="55" height="40" rx="12" fill="#f8c8dc"></rect>
+            <text class="region-number" x="193" y="112" text-anchor="middle">1</text>
+            <text class="region-label" x="193" y="145" text-anchor="middle">서울</text>
+          </g>
+
+          <!-- 인천 -->
+          <g class="map-region" data-name="인천광역시" data-desc="공항·바다·차이나타운·섬 여행 연계가 강점">
+            <rect class="region" x="90" y="110" width="80" height="70" rx="18" fill="#cdeac0"></rect>
+            <text class="region-number" x="130" y="152" text-anchor="middle">2</text>
+            <text class="region-label" x="130" y="195" text-anchor="middle">인천</text>
+          </g>
+
+          <!-- 경기 -->
+          <g class="map-region" data-name="경기도" data-desc="서울 근교 여행, 테마파크, 자연·카페 여행에 적합">
+            <rect class="region" x="150" y="130" width="150" height="120" rx="24" fill="#d6e6ff"></rect>
+            <text class="region-number" x="225" y="195" text-anchor="middle">3</text>
+            <text class="region-label" x="225" y="268" text-anchor="middle">경기</text>
+          </g>
+
+          <!-- 강원 -->
+          <g class="map-region" data-name="강원특별자치도" data-desc="산, 바다, 스키, 계곡 등 자연 여행 비중이 큼">
+            <path class="region" d="M300 105 Q410 95 430 180 L430 315 Q390 350 320 335 Q285 240 300 105 Z" fill="#fff0b3"></path>
+            <text class="region-number" x="370" y="210" text-anchor="middle">4</text>
+            <text class="region-label" x="370" y="360" text-anchor="middle">강원</text>
+          </g>
+
+          <!-- 충북 -->
+          <g class="map-region" data-name="충청북도" data-desc="내륙 중심, 호수·산·치유형 여행에 적합">
+            <rect class="region" x="220" y="265" width="110" height="110" rx="24" fill="#d7f0f7"></rect>
+            <text class="region-number" x="275" y="328" text-anchor="middle">5</text>
+            <text class="region-label" x="275" y="392" text-anchor="middle">충북</text>
+          </g>
+
+          <!-- 충남 -->
+          <g class="map-region" data-name="충청남도" data-desc="서해안, 온천, 공주·부여 역사 여행에 강점">
+            <path class="region" d="M95 255 L210 255 L210 385 L115 390 L75 340 L95 255 Z" fill="#ffd9c2"></path>
+            <text class="region-number" x="145" y="325" text-anchor="middle">6</text>
+            <text class="region-label" x="145" y="415" text-anchor="middle">충남</text>
+          </g>
+
+          <!-- 대전 -->
+          <g class="map-region" data-name="대전광역시" data-desc="교통 중심지, 과학·도시형 여행에 적합">
+            <rect class="region" x="170" y="390" width="55" height="45" rx="12" fill="#e6d6ff"></rect>
+            <text class="region-number" x="197" y="418" text-anchor="middle">7</text>
+            <text class="region-label" x="197" y="452" text-anchor="middle">대전</text>
+          </g>
+
+          <!-- 전북 -->
+          <g class="map-region" data-name="전북특별자치도" data-desc="한옥, 미식, 역사 문화 여행에 강점">
+            <rect class="region" x="95" y="410" width="130" height="115" rx="24" fill="#fde2e4"></rect>
+            <text class="region-number" x="160" y="475" text-anchor="middle">8</text>
+            <text class="region-label" x="160" y="545" text-anchor="middle">전북</text>
+          </g>
+
+          <!-- 광주 -->
+          <g class="map-region" data-name="광주광역시" data-desc="예술, 맛집, 도심 문화 여행에 적합">
+            <rect class="region" x="85" y="540" width="55" height="45" rx="12" fill="#c7f0db"></rect>
+            <text class="region-number" x="112" y="568" text-anchor="middle">9</text>
+            <text class="region-label" x="112" y="602" text-anchor="middle">광주</text>
+          </g>
+
+          <!-- 전남 -->
+          <g class="map-region" data-name="전라남도" data-desc="남도 음식, 섬, 바다, 느린 여행에 적합">
+            <path class="region" d="M50 525 L190 525 L220 620 L175 690 L75 675 L35 615 L50 525 Z" fill="#fef3c7"></path>
+            <text class="region-number" x="120" y="610" text-anchor="middle">10</text>
+            <text class="region-label" x="120" y="715" text-anchor="middle">전남</text>
+          </g>
+
+          <!-- 경북 -->
+          <g class="map-region" data-name="경상북도" data-desc="동해·유교문화·내륙 산악 여행 자원이 풍부">
+            <path class="region" d="M335 280 L440 280 L470 420 L430 570 L340 540 L305 425 L335 280 Z" fill="#d9f99d"></path>
+            <text class="region-number" x="390" y="415" text-anchor="middle">11</text>
+            <text class="region-label" x="390" y="595" text-anchor="middle">경북</text>
+          </g>
+
+          <!-- 대구 -->
+          <g class="map-region" data-name="대구광역시" data-desc="도심형 여행, 야시장, 근교 팔공산 연계 가능">
+            <rect class="region" x="315" y="455" width="58" height="45" rx="12" fill="#cfe8ff"></rect>
+            <text class="region-number" x="344" y="483" text-anchor="middle">12</text>
+            <text class="region-label" x="344" y="517" text-anchor="middle">대구</text>
+          </g>
+
+          <!-- 경남 -->
+          <g class="map-region" data-name="경상남도" data-desc="남해안, 통영·거제, 자연과 해양 관광 비중이 큼">
+            <path class="region" d="M215 545 L355 545 L390 655 L275 710 L180 660 L215 545 Z" fill="#fbcfe8"></path>
+            <text class="region-number" x="285" y="625" text-anchor="middle">13</text>
+            <text class="region-label" x="285" y="735" text-anchor="middle">경남</text>
+          </g>
+
+          <!-- 울산 -->
+          <g class="map-region" data-name="울산광역시" data-desc="산업도시와 해안 관광을 함께 즐길 수 있음">
+            <rect class="region" x="405" y="555" width="55" height="50" rx="12" fill="#c7d2fe"></rect>
+            <text class="region-number" x="432" y="586" text-anchor="middle">14</text>
+            <text class="region-label" x="432" y="620" text-anchor="middle">울산</text>
+          </g>
+
+          <!-- 부산 -->
+          <g class="map-region" data-name="부산광역시" data-desc="바다, 야경, 먹거리, 도심형 관광 수요가 높음">
+            <rect class="region" x="375" y="620" width="80" height="55" rx="16" fill="#fecdd3"></rect>
+            <text class="region-number" x="415" y="655" text-anchor="middle">15</text>
+            <text class="region-label" x="415" y="692" text-anchor="middle">부산</text>
+          </g>
+
+          <!-- 제주 -->
+          <g class="map-region" data-name="제주특별자치도" data-desc="자연, 드라이브, 휴양 여행 대표 지역">
+            <ellipse class="region" cx="140" cy="735" rx="70" ry="20" fill="#bae6fd"></ellipse>
+            <text class="region-number" x="140" y="741" text-anchor="middle">16</text>
+            <text class="region-label" x="140" y="770" text-anchor="middle">제주</text>
+          </g>
+        </svg>
+      </div>
+    </section>
+
+    <aside class="right-panel">
+      <h2>선택한 지역 정보</h2>
+
+      <div class="region-card" id="regionInfo">
+        <h3>서울특별시</h3>
+        <p>수도권 중심, 궁궐·전시·미식 여행에 적합합니다.</p>
+        <div class="region-meta">
+          <span class="meta-chip">도시 여행</span>
+          <span class="meta-chip">주말 코스</span>
+          <span class="meta-chip">인기 지역</span>
+        </div>
+      </div>
+
+      <div class="region-card">
+        <h3>활용 아이디어</h3>
+        <p>
+          지역을 클릭하면 해당 지역의 여행지 리스트, 맛집, 일정 추천,
+          계절별 인기 코스, 검색량 통계를 오른쪽 패널에 출력하도록 확장할 수 있습니다.
+        </p>
+      </div>
+    </aside>
+  </main>
+
+  <script>
+    // 지도 지역 클릭 시 오른쪽 패널 정보 변경
+    const regionGroups = document.querySelectorAll(".map-region");
+    const regionInfo = document.getElementById("regionInfo");
+
+    regionGroups.forEach((group) => {
+      group.addEventListener("click", () => {
+        const name = group.getAttribute("data-name");
+        const desc = group.getAttribute("data-desc");
+
+        regionInfo.innerHTML = `
+          <h3>${name}</h3>
+          <p>${desc}</p>
+          <div class="region-meta">
+            <span class="meta-chip">지역 선택 완료</span>
+            <span class="meta-chip">여행 플랜 연결 가능</span>
+            <span class="meta-chip">API 연동 확장 가능</span>
+          </div>
+        `;
+      });
+    });
+  </script>
+</body>
+</html>

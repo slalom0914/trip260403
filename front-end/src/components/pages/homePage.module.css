@@ -1,0 +1,97 @@
+/* 뷰포트 1화면 고정 — 세로·가로 스크롤 없음 */
+.homeRoot {
+  height: 100vh;
+  height: 100dvh;
+  max-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.hero {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background-color: #eef3f8;
+  overflow: hidden;
+}
+
+.mapColumn {
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  /* 좁은 화면에서 지도가 모달 밑으로만 가도록 약간 여유 */
+  padding-inline-start: clamp(0px, 2vw, 16px);
+}
+
+/*
+ * 모달(대략 left 224 + width 350)과 겹치지 않게 지도를 오른쪽으로 이동.
+ * 화면이 줄어들수록 max(0, 840px - 100vw) 항이 커져 추가로 밀어줌.
+ */
+.sidoMapOffset {
+  transform: translateX(
+    clamp(
+      100px,
+      calc(220px + max(0px, 840px - 100vw) * 0.52),
+      min(42vw, 340px)
+    )
+  );
+}
+
+.heroTitle {
+  margin: 0;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.9);
+}
+
+/* 여행 계획 모달 본문 */
+.planModalContent {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  text-align: center;
+}
+
+.planModalHeading {
+  margin: 0 0 4px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: rgba(0, 0, 0, 0.88);
+  line-height: 1.4;
+}
+
+.planModalSub {
+  margin: 0;
+  font-size: 0.92rem;
+  color: rgba(0, 0, 0, 0.65);
+}
+
+.planStartBtn {
+  margin-top: 8px;
+  background: #8c8c8c !important;
+  border-color: #737373 !important;
+  color: #fff !important;
+}
+
+.planStartBtn:hover {
+  background: #737373 !important;
+  border-color: #595959 !important;
+  color: #fff !important;
+}
+
+/* antd Modal이 지도 위에 뜨도록 — 마스크 없음 */
+:global(.home-plan-modal-wrap .ant-modal) {
+  max-width: calc(100vw - 32px);
+}
+
+:global(.home-plan-modal-wrap.ant-modal-wrap) {
+  pointer-events: none;
+}
+
+:global(.home-plan-modal-wrap .ant-modal) {
+  pointer-events: auto;
+}

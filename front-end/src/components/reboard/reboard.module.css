@@ -1,0 +1,72 @@
+.pageHeader {
+  padding: 40px 0px 5px 0px;
+}
+
+.listBody {
+  margin-top: 20px;
+}
+
+.listFooter {
+  display: flex;
+  flex-direction: row-reverse;
+  margin: 20px 0;
+}
+
+/* 게시글 쓰기 스타일 */
+.writeTitleLabel {
+  width: 10%;
+  height: 40px;
+  border: 1px solid lightGray;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  padding-left: 12px;
+  background-color: #f8f9fa;
+  box-sizing: border-box;
+} 
+
+.writeTitleInput {
+  width: 80%;
+  height: 40px;
+  border: 1px solid lightGray;
+  margin-left: 10px;
+  border-radius: 6px;
+  padding-left: 12px;
+  background-color: #f8f9fa;
+  box-sizing: border-box;
+}
+
+.writeWriterLabel {
+  width: 10%;
+  height: 40px;
+  border: 1px solid lightGray;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  padding-left: 12px;
+  background-color: #f8f9fa;
+  box-sizing: border-box;
+} 
+
+.writeWriterInput {
+  width: 30%;
+  height: 40px;
+  border: 1px solid lightGray;
+  margin-left: 10px;
+  border-radius: 6px;
+  padding-left: 12px;
+  background-color: #f8f9fa;
+  box-sizing: border-box;
+}
+
+.writeContentLabel {
+  width: 10%;
+  height: 40px;
+  border: 1px solid lightGray;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  padding-left: 12px;
+  background-color: #f8f9fa;
+  box-sizing: border-box;
+} 

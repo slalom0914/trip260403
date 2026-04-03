@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mybatis.mapper.MemberMapper">
+    <select id="memberList" parameterType="map" resultType="map">
+        select member_id as "member_id", email as "email", password as "password", name as "name", nickname as "nickname"
+                , profile_image as "profile_image" , social_type as "social_type", role as "role", access_token as "access_token"
+                , refresh_token as "refresh_token", create_date as "create_date" , latest_date as "latest_date", status as "status"
+          from member
+        <where>
+            <if test="status != null and status != '' and status != 'all'">
+                and upper(trim(status)) = upper(trim(#{status}))
+            </if>
+            <if test="role != null and role != '' and role != 'all'">
+                and role = #{role}
+            </if>
+            <if test="joinDateStart != null and joinDateStart != ''">
+                and create_date &gt;= #{joinDateStart}
+            </if>
+            <if test="joinDateEnd != null and joinDateEnd != ''">
+                and create_date &lt;= #{joinDateEnd}
+            </if>
+            <if test="lastLoginStart != null and lastLoginStart != ''">
+                and latest_date is not null
+                and to_char(latest_date, 'YYYY-MM-DD') &gt;= #{lastLoginStart}
+            </if>
+            <if test="lastLoginEnd != null and lastLoginEnd != ''">
+                and latest_date is not null
+                and to_char(latest_date, 'YYYY-MM-DD') &lt;= #{lastLoginEnd}
+            </if>
+            <if test="socialType != null and socialType != ''">
+                and upper(trim(social_type)) = upper(trim(#{socialType}))
+            </if>
+            <if test="keyword != null and keyword != '' and keywordField != null and keywordField != ''">
+                <choose>
+                    <when test="keywordField == 'email'">
+                        and lower(email) like '%' || lower(#{keyword}) || '%'
+                    </when>
+                    <when test="keywordField == 'name'">
+                        and lower(name) like '%' || lower(#{keyword}) || '%'
+                    </when>
+                    <when test="keywordField == 'nickname'">
+                        and lower(nickname) like '%' || lower(#{keyword}) || '%'
+                    </when>
+                </choose>
+            </if>
+        </where>
+         order by create_date desc nulls last
+    </select>
+    <insert id="memberInsert" parameterType="com.example.demo.model.Member">
+        insert into member (member_id, email, password, name, nickname, profile_image
+                 , social_type, role, access_token, refresh_token, create_date
+                 , latest_date, status)
+        values (#{member_id,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{nickname, jdbcType=VARCHAR}, #{profile_image,jdbcType=VARCHAR}
+                 , #{social_type,jdbcType=VARCHAR}, #{role,jdbcType=VARCHAR}, #{access_token,jdbcType=VARCHAR}, #{refresh_token,jdbcType=VARCHAR}, to_char(sysdate, 'YYYY-MM-DD')
+                 , #{latest_date,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR})
+    </insert>
+    <update id="memberUpdate" parameterType="map">
+        update member
+        set email = #{email}, password = #{password}, name = #{name}, nickname = #{nickname}, profile_image = #{profile_image,jdbcType=VARCHAR}
+        where member_id = #{member_id}
+    </update>
+    <delete id="memberDelete" parameterType="map">
+        delete from member
+        where member_id = #{member_id} and password = #{password}
+    </delete>
+
+    <!-- 단건 조회 (DAO memberDetail) -->
+    <select id="memberDetail" parameterType="map" resultType="map">
+        select member_id as "member_id", email as "email", password as "password", name as "name", nickname as "nickname"
+             , profile_image as "profile_image" , social_type as "social_type", role as "role", access_token as "access_token"
+             , refresh_token as "refresh_token", create_date as "create_date" , latest_date as "latest_date", status as "status"
+          from member
+         where member_id = #{member_id}
+    </select>
+
+    <!-- 내 정보 · email 존재 여부) -->
+    <select id="existsByEmail" parameterType="map" resultType="string">
+        select member_id
+        from member
+        where email = #{email}
+    </select>
+
+    <select id="existsByNickname" parameterType="map" resultType="string">
+        select member_id
+        from member
+        where lower(trim(nickname)) = lower(trim(#{nickname}))
+    </select>
+
+    <select id="findByEmail" parameterType="map" resultType="com.example.demo.model.Member">
+        select member_id as "member_id", email as "email", password as "password", name as "name", nickname as "nickname"
+             , profile_image as "profile_image" , social_type as "social_type", role as "role", access_token as "access_token"
+             , refresh_token as "refresh_token", create_date as "create_date" , latest_date as "latest_date", status as "status"
+        from member
+        where email = #{email}
+    </select>
+
+    <!-- 내 정보 · PK 단건 조회 (Member VO 매핑, getMyInfo 등) -->
+    <select id="findMemberByMemberId" parameterType="map" resultType="com.example.demo.model.Member">
+        select member_id as "member_id", email as "email", password as "password", name as "name", nickname as "nickname"
+             , profile_image as "profile_image" , social_type as "social_type", role as "role", access_token as "access_token"
+             , refresh_token as "refresh_token", create_date as "create_date" , latest_date as "latest_date", status as "status"
+        from member
+         where member_id = #{member_id}
+    </select>
+
+    <!-- 내 정보 / 관리자 단건 (Map, 최소 컬럼) -->
+    <select id="selectMemberByMemberId" parameterType="map" resultType="map">
+        select member_id as "member_id", email as "email", name as "name", role as "role"
+          from member
+         where member_id = #{member_id}
+    </select>
+
+    <!-- 관리자 전체 회원 목록 -->
+    <select id="selectAllMembersForAdmin" resultType="map">
+        select member_id as "member_id", email as "email", name as "name", role as "role"
+          from member
+         order by create_date desc
+    </select>
+
+    <!-- 권한 변경 -->
+    <update id="updateMemberRole" parameterType="map">
+        update member
+           set role = #{role}
+         where member_id = #{member_id}
+    </update>
+
+    <select id="getMemberEmail" resultType="com.example.demo.model.Member" parameterType="com.example.demo.dto.LoginRequest">
+        SELECT member_id as "member_id", name as "name", password as "password", email as "email", role as "role"
+                   , social_type as "social_type", profile_image as "profile_image"
+          FROM member
+        WHERE email = #{email}
+    </select>
+    <select id="getMemberId" resultType="com.example.demo.model.Member" parameterType="com.example.demo.dto.LoginRequest">
+        SELECT member_id as "member_id", name as "name", password as "password", email as "email"
+                   , role as "role", social_type as "social_type", profile_image as "profile_image"
+          FROM member
+        WHERE member_id = #{member_id}
+    </select>
+
+</mapper>
