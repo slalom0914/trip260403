@@ -50,7 +50,8 @@ const buildMemberSearchParams = (values) => {
     p.joinDateEnd = toYmd(jr[1])
   }
   if (values.status && values.status !== 'all') {
-    p.status = String(values.status).toUpperCase()
+    p.status = String(values.status).trim()
+
   }
   if (values.role && values.role !== 'all') {
     p.role = values.role
@@ -208,27 +209,25 @@ const formatMemberRoleLabel = (role) => {
 }
 
 const MEMBER_STATUS_LABELS = {
-  ACTIVE: '활성',
-  SUSPENDED: '정지',
-  WITHDRAWN: '탈퇴',
+  active: '활성',
+  suspended: '정지',
+  withdrawn: '탈퇴',
 }
 
 const formatMemberStatusLabel = (status) => {
   if (status == null || status === '') return '—'
-  const k = String(status).trim().toUpperCase()
+  const k = String(status).trim()
   return MEMBER_STATUS_LABELS[k] ?? status
 }
 
 const renderMemberStatusCell = (status, record) => {
   const value = status ?? record?.STATUS
-  const raw = String(value ?? '')
-    .trim()
-    .toUpperCase()
+  const raw = String(value ?? '').trim()
   const label = formatMemberStatusLabel(value)
-  if (raw === 'WITHDRAWN') {
+  if (raw === 'withdrawn') {
     return <span style={{ color: '#ff4d4f' }}>{label}</span>
   }
-  if (raw === 'SUSPENDED') {
+  if (raw === 'suspended') {
     return <span style={{ color: '#8c8c8c' }}>{label}</span>
   }
   return label

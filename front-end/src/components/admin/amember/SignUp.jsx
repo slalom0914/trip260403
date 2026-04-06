@@ -28,9 +28,9 @@ const ROLE_TO_API = {
  * 서버 저장용 상태 매핑
  */
 const STATUS_TO_API = {
-  정상: 'ACTIVE',
-  제한: 'BLOCKED',
-  종료: 'INACTIVE',
+  활성: 'active',
+  정지: 'suspended',
+  탈퇴: 'withdrawn',
 }
 
 /**
@@ -138,7 +138,7 @@ const SignUp = ({
 
       // 2. 권한 / 상태 값 서버용으로 변환
       const roleValue = ROLE_TO_API[values.role] ?? values.role
-      const statusValue = STATUS_TO_API[values.status] ?? 'ACTIVE'
+      const statusValue = STATUS_TO_API[values.status] ?? 'active'
 
       // 3. 업로드된 파일 정보 추출
       // Upload는 fileList 배열 구조이므로 첫 번째 파일만 사용
@@ -223,7 +223,7 @@ const SignUp = ({
         initialValues={{
           social_type: 'LOCAL',
           role: 'ROLE_MEMBER', // Select option 값과 동일하게 수정
-          status: '정상',
+          status: '활성',
           profile_image: [],
         }}
       >
@@ -435,9 +435,9 @@ const SignUp = ({
           <Select
             className={styles.inputHalf}
             options={[
-              { value: '정상', label: '정상' },
-              { value: '제한', label: '제한' },
-              { value: '종료', label: '종료' },
+              { value: '활성', label: '활성' },
+              { value: '정지', label: '정지' },
+              { value: '탈퇴', label: '탈퇴' },
             ]}
           />
         </Form.Item>
