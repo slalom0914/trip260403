@@ -165,7 +165,7 @@ const HeaderTrip = () => {
       window.dispatchEvent(new Event('trip-auth-profile-updated'));
       setIsLoggedIn(false);
       setUserRole('');
-      navigate('/');
+      navigate('/', { replace: true });
     }
   };
 
