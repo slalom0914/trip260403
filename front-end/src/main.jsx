@@ -10,7 +10,11 @@ import ProtectedRoute from './ProtectedRoute.jsx';
 import KakaoRedirect from './components/auth/KakaoRedirect.jsx';
 import GoogleRedirect from './components/auth/GoogleRedirect.jsx';
 import NaverRedirect from './components/auth/NaverRedirect.jsx';
-
+/*
+인증이 필요한 페이지와 아닌 페이지를 분리 
+전체 흐름은 : 
+브라우저 진입 -> main.jsx 실행 ->  BrowserRouter 적용 -> AntdApp 적용 -> Routes 분기
+*/
 createRoot(document.getElementById('root')).render(
   <>
     <BrowserRouter>
